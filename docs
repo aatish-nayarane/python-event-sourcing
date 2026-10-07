@@ -1,0 +1,106 @@
+The Event Sourcing pattern is a design approach in software architecture where state changes are stored as a sequence of events, rather than just saving the current state.
+
+🧠 Core Idea
+
+Instead of storing “what things look like now,” you store everything that happened.
+
+👉 Example:
+
+Traditional approach:
+
+Account Balance = 500
+
+Event sourcing approach:
+
++1000 deposited  
+-200 withdrawn  
+-300 withdrawn  
+
+Current balance = computed from events = 500
+
+🔑 Key Concepts
+1. Event
+
+An event represents something that happened in the system.
+
+Immutable (never changed)
+Example: OrderPlaced, PaymentProcessed
+2. Event Store
+
+A database or storage system that keeps all events in order.
+
+Acts as the single source of truth
+Append-only (no updates, no deletes)
+3. Aggregate
+
+A domain object that:
+
+Applies events
+Rebuilds its current state from past events
+4. Replay
+
+You can reconstruct the system state anytime by replaying events from the beginning.
+
+⚙️ How It Works
+User performs an action
+System creates an event
+Event is stored in event store
+State is rebuilt by applying events
+📊 Example (E-commerce Order)
+
+Events:
+
+OrderCreated
+ItemAdded
+ItemRemoved
+OrderShipped
+
+Instead of storing:
+
+Order = { items: [...], status: shipped }
+
+You store:
+
+OrderCreated  
+ItemAdded (Laptop)  
+ItemAdded (Mouse)  
+OrderShipped
+✅ Advantages
+Full audit history (you know everything that happened)
+Easy debugging (replay events to reproduce issues)
+Temporal queries (what was the state at time X?)
+Scalability (fits well with distributed systems)
+Works great with CQRS (Command Query Responsibility Segregation)
+❌ Disadvantages
+More complex than traditional CRUD
+Event schema evolution can be tricky
+Requires careful design of events
+Rebuilding state can be expensive (needs snapshots sometimes)
+🧩 When to Use
+
+Use Event Sourcing when:
+
+You need audit logs or history
+Business logic is event-driven
+System is complex or distributed
+You want time-travel debugging
+
+Avoid when:
+
+Simple CRUD app
+No need for history
+Team is unfamiliar with the pattern
+🆚 Event Sourcing vs Traditional CRUD
+Feature	CRUD	Event Sourcing
+Data stored	Current state	All events
+History	Limited	Complete
+Debugging	Hard	Easy (replay)
+Complexity	Low	High
+🔄 Often Used With
+CQRS pattern
+Message queues (Kafka, RabbitMQ)
+Microservices architectures
+
+If you want, I can show a code example (Java / Node.js / Python) or a real-world system design using event sourcing.
+
+DEVELOPER MODE
